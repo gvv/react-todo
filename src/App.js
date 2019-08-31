@@ -44,6 +44,19 @@ saveTodo = () => {
 }
 };
 
+deleteTodo = index => {
+  console.log(index)
+  // Imperative 
+  // const todos = [...this.state.todos];
+  // todos.splice(index,1)
+  // this.setState({todos})
+  
+  //Declarative
+  this.setState({
+    todos: this.state.todos.filter((_,i) => index !== i)
+  })
+};
+
 render () {
   console.log(this.state.todos);
   return (
@@ -71,7 +84,9 @@ render () {
                 <Checkbox/>
                 <ListItemText primary={item}/>
                 <ListItemSecondaryAction>
-                  <IconButton>
+                  <IconButton onClick={ () => 
+                    this.deleteTodo(index)
+                  }>
                     <DeleteIcon/>
                   </IconButton>
                 </ListItemSecondaryAction>

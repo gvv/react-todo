@@ -39,7 +39,10 @@ saveTodo = () => {
   if (this.state.value !== '') {
   this.setState({
     value: '',
-    todos: [...this.state.todos, this.state.value]
+    todos: [...this.state.todos, {
+      value: this.state.value,
+      completed: false
+    }]
   });
 }
 };
@@ -56,6 +59,22 @@ deleteTodo = index => {
     todos: this.state.todos.filter((_,i) => index !== i)
   })
 };
+
+toggleCompleted = index => {
+  // Imperative
+  // const todos = [...this.state.todos]
+  // todos[index].completed = !todos[index].completed
+  // this.setState({
+  //  todos: todos
+  // })
+
+  // Declarative
+  this.setState({
+    todos: this.state.todos.map((todo, i) =>
+      index === i ? {...todo, completed: !todo.completed } : todo
+     )
+  })
+}
 
 render () {
   console.log(this.state.todos);
@@ -78,11 +97,11 @@ render () {
       <Grid item md={8}>
         <List>
           {
-            this.state.todos.map((item, index) => {
+            this.state.todos.map((todo, index) => {
               return(
-                <ListItem button key={index}> 
-                <Checkbox/>
-                <ListItemText primary={item}/>
+                <ListItem button key={index} onClick={()=> this.toggleCompleted(index)}> 
+                <Checkbox checked={todo.completed}/>
+                <ListItemText primary={todo.value}/>
                 <ListItemSecondaryAction>
                   <IconButton onClick={ () => 
                     this.deleteTodo(index)
